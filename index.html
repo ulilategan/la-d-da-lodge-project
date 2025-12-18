@@ -7,22 +7,306 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <style>
+        /* Additional mobile-first responsive styles */
+        .hero-headline {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 1.5rem;
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+        }
+        
+        .feature-highlight {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-sm);
+            backdrop-filter: blur(5px);
+        }
+        
+        .feature-highlight i {
+            color: var(--sunset-gold);
+            font-size: 1.2rem;
+        }
+        
+        .mobile-cta {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            padding: 1rem;
+            z-index: 1000;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .mobile-cta .cta-button {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .room-feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .room-feature {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 1rem;
+            background: var(--light-blue);
+            border-radius: var(--border-radius-sm);
+        }
+        
+        .room-feature i {
+            font-size: 1.5rem;
+            color: var(--accent-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .room-feature span {
+            font-size: 0.85rem;
+            color: var(--text-dark);
+        }
+        
+        #map {
+            height: 400px;
+            width: 100%;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            border: 3px solid var(--sunset-gold);
+        }
+        
+        .map-container {
+            position: relative;
+            height: 400px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+        
+        .map-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(6, 43, 94, 0.9), transparent);
+            color: white;
+            padding: 2rem;
+            z-index: 1000;
+        }
+        
+        .map-marker {
+            background: var(--sunset-gold);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border: 3px solid white;
+        }
+        
+        .testimonial-slider {
+            overflow: hidden;
+            width: 100%;
+            position: relative;
+        }
+        
+        .testimonial-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .testimonial-slide {
+            min-width: 100%;
+            padding: 2rem;
+        }
+        
+        .testimonial-content {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            border-left: 4px solid var(--sunset-gold);
+        }
+        
+        .testimonial-slider-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .slider-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        
+        .slider-btn:hover {
+            background: var(--accent-blue);
+            transform: scale(1.1);
+        }
+        
+        .slider-dots {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        .slider-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--light-blue);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .slider-dot.active {
+            background: var(--sunset-gold);
+            transform: scale(1.2);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--light-blue);
+            border-radius: var(--border-radius);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .section-divider {
+            text-align: center;
+            margin: 4rem 0;
+            position: relative;
+        }
+        
+        .section-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+        }
+        
+        .divider-icon {
+            background: white;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .divider-icon i {
+            font-size: 2rem;
+            color: var(--sunset-gold);
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-cta {
+                display: block;
+            }
+            
+            .room-feature-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .map-container {
+                height: 300px;
+            }
+            
+            .map-overlay {
+                padding: 1rem;
+            }
+            
+            .hero-content {
+                padding: 1.5rem !important;
+            }
+            
+            .testimonial-content {
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .room-feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .feature-highlight {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
-<!-- Update the logo section in index.html (and other pages) -->
-<a href="#" class="logo">
-    <img src="images/logo.png" alt="La D Da Lodge">
-</a>
+            <a href="#" class="logo">
+                <img src="images/logo.png" alt="La D Da Lodge">
+            </a>
             <ul class="nav-menu">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#accommodation">Accommodation</a></li>
-                <li><a href="#amenities">Amenities</a></li>
-                <li><a href="#location">Location</a></li>
-                <li><a href="#booking" class="booking-btn">Book Now</a></li>
-                <li><a href="admin.html" class="admin-btn">Admin</a></li>
+                <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#accommodation"><i class="fas fa-bed"></i> Rooms</a></li>
+                <li><a href="#amenities"><i class="fas fa-star"></i> Amenities</a></li>
+                <li><a href="#location"><i class="fas fa-map-marker-alt"></i> Location</a></li>
+                <li><a href="#booking" class="booking-btn"><i class="fas fa-calendar-check"></i> Book Now</a></li>
+                <li><a href="admin.html" class="admin-btn"><i class="fas fa-cog"></i> Admin</a></li>
             </ul>
             <div class="hamburger">
                 <span></span>
@@ -35,100 +319,277 @@
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
-            <h1>Experience the Heart of the Northern Cape</h1>
-            <p>Comfortable lodge accommodation just outside Kimberley, surrounded by authentic veld landscapes</p>
-            <a href="#booking" class="cta-button">Check Availability</a>
+            <h1 class="hero-headline">Escape to the Heart of the Karoo</h1>
+            <p class="hero-subtitle">Where luxury meets the wild. Experience authentic Northern Cape hospitality at La D Da Lodge, nestled just outside Kimberley amidst breathtaking veld landscapes.</p>
+            
+            <div class="feature-highlights">
+                <div class="feature-highlight">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Secure & Peaceful Environment</span>
+                </div>
+                <div class="feature-highlight">
+                    <i class="fas fa-wifi"></i>
+                    <span>High-Speed Free WiFi</span>
+                </div>
+                <div class="feature-highlight">
+                    <i class="fas fa-sun"></i>
+                    <span>Year-round Sunshine Destination</span>
+                </div>
+            </div>
+            
+            <a href="#booking" class="cta-button">
+                <i class="fas fa-calendar-alt"></i> Check Availability & Rates
+            </a>
         </div>
         <div class="weather-widget">
             <div class="weather-icon">
                 <i class="fas fa-sun"></i>
             </div>
             <div class="weather-info">
-                <h4>Kimberley Climate</h4>
-                <p>Sunny & Dry</p>
-                <p>Typical of the Karoo</p>
+                <h4>Kimberley Weather</h4>
+                <p>Mostly Sunny</p>
+                <p>28°C </p>
             </div>
         </div>
     </section>
+
+    <!-- Quick Stats -->
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">100</div>
+                <div class="stat-label">Comfortable Rooms</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Security & Service</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">15min</div>
+                <div class="stat-label">From City Center</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Guest Satisfaction</div>
+            </div>
+        </div>
+    </div>
 
     <!-- Accommodation Section -->
     <section id="accommodation" class="accommodation">
         <div class="container">
-            <h2 class="section-title">Our Accommodation</h2>
-            <p class="section-subtitle">Choose from our range of comfortable rooms</p>
+            <h2 class="section-title">Your Home Away From Home</h2>
+            <p class="text-center" style="max-width: 800px; margin: 0 auto 3rem auto;">Choose from our selection of carefully designed rooms, each offering comfort, privacy, and stunning views of the surrounding veld.</p>
             
             <div class="rooms-grid">
                 <!-- Family Room -->
-                <div class="room-card">
+                <div class="room-card" data-animate>
                     <div class="room-type">Family Room</div>
                     <div class="room-details">
-                        <h3>Double + Single Bed</h3>
-                        <p><i class="fas fa-users"></i> Sleeps 3</p>
-                        <p><i class="fas fa-bed"></i> Double + Single Bed</p>
-                        <p><i class="fas fa-shower"></i> En-suite Shower</p>
-                        <p><i class="fas fa-tv"></i> OpenView TV</p>
-                        <p><i class="fas fa-coffee"></i> Tea/Coffee Facilities</p>
+                        <h3>Perfect for Family Getaways</h3>
+                        <p><i class="fas fa-users"></i> Sleeps 3 Comfortably</p>
+                        <p><i class="fas fa-expand-alt"></i> Spacious 35m² Room</p>
+                        
+                        <div class="room-feature-grid">
+                            <div class="room-feature">
+                                <i class="fas fa-bed"></i>
+                                <span>Double + Single</span>
+                            </div>
+                            <div class="room-feature">
+                                <i class="fas fa-shower"></i>
+                                <span>En-suite</span>
+                            </div>
+                            <div class="room-feature">
+                                <i class="fas fa-tv"></i>
+                                <span>OpenView TV</span>
+                            </div>
+                            <div class="room-feature">
+                                <i class="fas fa-coffee"></i>
+                                <span>Tea/Coffee</span>
+                            </div>
+                        </div>
+                        
                         <p class="availability"><i class="fas fa-home"></i> 24 Units Available</p>
                         <p class="price">From R450 pp/pn</p>
-                        <a href="booking.html?type=family" class="book-room-btn">Book This Room</a>
+                        <a href="booking.html?type=family" class="book-room-btn">
+                            <i class="fas fa-calendar-plus"></i> Book Family Room
+                        </a>
                     </div>
                 </div>
 
                 <!-- Self Catering Unit -->
-                <div class="room-card featured">
+                <div class="room-card featured" data-animate>
                     <div class="room-type">Self Catering Unit</div>
                     <div class="room-details">
-                        <h3>Two Double Bedrooms</h3>
-                        <p><i class="fas fa-users"></i> Sleeps 4</p>
-                        <p><i class="fas fa-bed"></i> 2 Double Beds</p>
-                        <p><i class="fas fa-home"></i> Living Room & Kitchenette</p>
-                        <p><i class="fas fa-shower"></i> Shared Bathroom</p>
-                        <p><i class="fas fa-tv"></i> OpenView TV</p>
-                        <p><i class="fas fa-coffee"></i> Tea/Coffee Facilities</p>
+                        <h3>Your Private Retreat</h3>
+                        <p><i class="fas fa-users"></i> Perfect for 4 Guests</p>
+                        <p><i class="fas fa-home"></i> Full Apartment Style</p>
+                        
+                        <div class="room-feature-grid">
+                            <div class="room-feature">
+                                <i class="fas fa-bed"></i>
+                                <span>2 Double Beds</span>
+                            </div>
+                            <div class="room-feature">
+                                <i class="fas fa-utensils"></i>
+                                <span>Kitchenette</span>
+                            </div>
+                            <div class="room-feature">
+                                <i class="fas fa-couch"></i>
+                                <span>Living Room</span>
+                            </div>
+                            <div class="room-feature">
+                                <i class="fas fa-bath"></i>
+                                <span>Bathroom</span>
+                            </div>
+                        </div>
+                        
                         <p class="availability"><i class="fas fa-home"></i> 12 Units Available</p>
                         <p class="price">From R650 pp/pn</p>
-                        <a href="booking.html?type=selfcatering" class="book-room-btn">Book This Unit</a>
+                        <a href="booking.html?type=selfcatering" class="book-room-btn">
+                            <i class="fas fa-calendar-plus"></i> Book Self Catering
+                        </a>
                     </div>
                 </div>
 
                 <!-- Standard Room -->
-                <div class="room-card">
+                <div class="room-card" data-animate>
                     <div class="room-type">Standard Room</div>
                     <div class="room-details">
-                        <h3>Two Single Beds</h3>
-                        <p><i class="fas fa-users"></i> Sleeps 2</p>
-                        <p><i class="fas fa-bed"></i> 2 Single Beds</p>
-                        <p><i class="fas fa-shower"></i> En-suite Shower</p>
-                        <p><i class="fas fa-tv"></i> OpenView TV</p>
-                        <p><i class="fas fa-coffee"></i> Tea/Coffee Facilities</p>
+                        <h3>Comfort & Value</h3>
+                        <p><i class="fas fa-users"></i> Ideal for 2 Guests</p>
+                        <p><i class="fas fa-heart"></i> All Essential Amenities</p>
+                        
+                        <div class="room-feature-grid">
+                            <div class="room-feature">
+                                <i class="fas fa-bed"></i>
+                                <span>2 Single Beds</span>
+                            </div>
+                            <div class="room-feature">
+                                <i class="fas fa-shower"></i>
+                                <span>En-suite</span>
+                            </div>
+                            <div class="room-feature">
+                                <i class="fas fa-tv"></i>
+                                <span>OpenView TV</span>
+                            </div>
+                            <div class="room-feature">
+                                <i class="fas fa-coffee"></i>
+                                <span>Tea/Coffee</span>
+                            </div>
+                        </div>
+                        
                         <p class="availability"><i class="fas fa-home"></i> 64 Units Available</p>
                         <p class="price">From R350 pp/pn</p>
-                        <a href="booking.html?type=standard" class="book-room-btn">Book This Room</a>
+                        <a href="booking.html?type=standard" class="book-room-btn">
+                            <i class="fas fa-calendar-plus"></i> Book Standard Room
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+
+
     <!-- Amenities Section -->
     <section id="amenities" class="amenities">
         <div class="container">
-            <h2 class="section-title">Lodge Amenities</h2>
+            <h2 class="section-title">Experience Lodge Life</h2>
+            <p class="text-center" style="max-width: 800px; margin: 0 auto 3rem auto;">We've thought of everything to make your stay unforgettable. From modern comforts to authentic Karoo experiences.</p>
+            
             <div class="amenities-grid">
-                <div class="amenity">
+                <div class="amenity" data-animate>
                     <i class="fas fa-car"></i>
                     <h3>Secure Parking</h3>
-                    <p>Ample safe parking for all guests</p>
+                    <p>Ample, well-lit parking with 24/7 security monitoring for complete peace of mind.</p>
                 </div>
-                <div class="amenity">
-                    <i class="fas fa-umbrella-beach"></i>
+                <div class="amenity" data-animate>
+                    <i class="fas fa-fire"></i>
                     <h3>Braai Facilities</h3>
-                    <p>Traditional South African braai areas</p>
+                    <p>Traditional South African braai areas where you can enjoy sunset gatherings under the stars.</p>
                 </div>
-                <div class="amenity">
-                    <i class="fas fa-tree"></i>
+                <div class="amenity" data-animate>
+                    <i class="fas fa-binoculars"></i>
                     <h3>Veld Views</h3>
-                    <p>Beautiful Northern Cape landscapes</p>
+                    <p>Wake up to breathtaking views of untouched Northern Cape landscapes and wildlife.</p>
+                </div>
+                <div class="amenity" data-animate>
+                    <i class="fas fa-wind"></i>
+                    <h3>Climate Control</h3>
+                    <p>All rooms feature individual climate control for your comfort in any season.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" style="padding: 6rem 0; background: var(--light-blue);">
+        <div class="container">
+            <h2 class="section-title">What Our Guests Say</h2>
+            <div class="testimonial-slider">
+                <div class="testimonial-track" id="testimonialTrack">
+                    <div class="testimonial-slide">
+                        <div class="testimonial-content">
+                            <div class="rating">
+                                <i class="fas fa-star text-gold"></i>
+                                <i class="fas fa-star text-gold"></i>
+                                <i class="fas fa-star text-gold"></i>
+                                <i class="fas fa-star text-gold"></i>
+                                <i class="fas fa-star text-gold"></i>
+                            </div>
+                            <p>"The perfect escape from city life. The views are breathtaking, and the staff went above and beyond to make our stay special. We'll definitely be back!"</p>
+                            <div class="guest-info">
+                                <strong>Sarah M.</strong>
+                                <span>Johannesburg</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="testimonial-content">
+                            <div class="rating">
+                                <i class="fas fa-star text-gold"></i>
+                                <i class="fas fa-star text-gold"></i>
+                                <i class="fas fa-star text-gold"></i>
+                                <i class="fas fa-star text-gold"></i>
+                                <i class="fas fa-star text-gold"></i>
+                            </div>
+                            <p>"Our family loved the self-catering unit. Plenty of space, clean, and well-equipped. The kids loved watching the sunrise over the veld every morning."</p>
+                            <div class="guest-info">
+                                <strong>Theo van R.</strong>
+                                <span>Cape Town</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="testimonial-content">
+                            <div class="rating">
+                                <i class="fas fa-star text-gold"></i>
+                                <i class="fas fa-star text-gold"></i>
+                                <i class="fas fa-star text-gold"></i>
+                                <i class="fas fa-star text-gold"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p>"Great value for money! Comfortable beds, clean rooms, and friendly service. Perfect base for exploring Kimberley's attractions."</p>
+                            <div class="guest-info">
+                                <strong>James K.</strong>
+                                <span>Durban</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-slider-controls">
+                    <button class="slider-btn prev-btn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="slider-btn next-btn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="slider-dots">
+                    <div class="slider-dot active" data-index="0"></div>
+                    <div class="slider-dot" data-index="1"></div>
+                    <div class="slider-dot" data-index="2"></div>
                 </div>
             </div>
         </div>
@@ -137,19 +598,27 @@
     <!-- Booking Section -->
     <section id="booking" class="booking-section">
         <div class="container">
-            <h2 class="section-title">Book Your Stay</h2>
-            <div class="booking-widget">
+            <h2 class="section-title">Ready to Escape?</h2>
+            <p class="text-center" style="max-width: 800px; margin: 0 auto 3rem auto; color: var(--text-dark);">Check availability and secure your perfect Karoo getaway. Best rates guaranteed when you book direct.</p>
+            
+            <div class="booking-widget" data-animate>
                 <form id="quickBooking" class="booking-form">
                     <div class="form-group">
-                        <label for="checkin">Check-in</label>
+                        <label for="checkin">
+                            <i class="fas fa-calendar-alt"></i> Check-in
+                        </label>
                         <input type="date" id="checkin" required>
                     </div>
                     <div class="form-group">
-                        <label for="checkout">Check-out</label>
+                        <label for="checkout">
+                            <i class="fas fa-calendar-alt"></i> Check-out
+                        </label>
                         <input type="date" id="checkout" required>
                     </div>
                     <div class="form-group">
-                        <label for="roomType">Room Type</label>
+                        <label for="roomType">
+                            <i class="fas fa-bed"></i> Room Type
+                        </label>
                         <select id="roomType" required>
                             <option value="">Select Room Type</option>
                             <option value="family">Family Room</option>
@@ -158,11 +627,20 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="guests">Guests</label>
-                        <input type="number" id="guests" min="1" max="10" value="1" required>
+                        <label for="guests">
+                            <i class="fas fa-users"></i> Guests
+                        </label>
+                        <input type="number" id="guests" min="1" max="10" value="2" required>
                     </div>
-                    <button type="submit" class="cta-button">Check Availability</button>
+                    <button type="submit" class="cta-button">
+                        <i class="fas fa-search"></i> Check Availability & Rates
+                    </button>
                 </form>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <small style="color: var(--text-muted);">
+                        <i class="fas fa-shield-alt"></i> Secure booking · Best price guarantee · No booking fees
+                    </small>
+                </div>
             </div>
         </div>
     </section>
@@ -170,61 +648,250 @@
     <!-- Location Section -->
     <section id="location" class="location">
         <div class="container">
-            <h2 class="section-title">Our Location</h2>
+            <h2 class="section-title">Discover Kimberley</h2>
+            <p class="text-center" style="max-width: 800px; margin: 0 auto 3rem auto;">Perfectly positioned to explore the Diamond City and its surroundings. Experience the best of both worlds: peaceful countryside living with easy access to urban attractions.</p>
+            
             <div class="location-content">
                 <div class="location-info">
-                    <h3>Just Outside Kimberley</h3>
-                    <p>Experience the authentic Northern Cape veld with easy access to Kimberley's attractions:</p>
+                    <h3>Your Gateway to Adventure</h3>
+                    <p>Located just 15 minutes from Kimberley city center, La D Da Lodge offers the perfect balance between tranquil countryside living and convenient access to local attractions.</p>
+                    
                     <ul>
-                        <li><i class="fas fa-map-marker-alt"></i> 15 minutes from Kimberley city center</li>
-                        <li><i class="fas fa-flag"></i> Close to the Big Hole and Mining Museum</li>
-                        <li><i class="fas fa-paw"></i> Surrounded by natural veld landscapes</li>
-                        <li><i class="fas fa-sun"></i> Perfect base for exploring the region</li>
+                        <li>
+                            <i class="fas fa-gem"></i>
+                            <div>
+                                <strong>The Big Hole</strong>
+                                <span>10km · World's largest hand-dug excavation</span>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-landmark"></i>
+                            <div>
+                                <strong>Mining Museum</strong>
+                                <span>12km · Discover Kimberley's rich history</span>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-paw"></i>
+                            <div>
+                                <strong>Kamfers Dam</strong>
+                                <span>8km · Flamingo breeding ground</span>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-utensils"></i>
+                            <div>
+                                <strong>Local Cuisine</strong>
+                                <span>15km · Authentic Northern Cape restaurants</span>
+                            </div>
+                        </li>
                     </ul>
                 </div>
-                <div class="map-placeholder">
-                    <div class="map-content">
-                        <h4>Kimberley Area</h4>
-                        <p>Northern Cape, South Africa</p>
-                        <div class="veld-element">
-                            <i class="fas fa-mountain"></i>
-                            <i class="fas fa-tree"></i>
-                            <i class="fas fa-sun"></i>
-                        </div>
+                
+                <div class="map-container">
+                    <div id="map"></div>
+                    <div class="map-overlay">
+                        <h4 style="color: white; margin-bottom: 0.5rem;">La D Da Lodge Location</h4>
+                        <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: 0;">
+                            Just outside Kimberley, Northern Cape<br>
+                            Easy access via N12 highway
+                        </p>
                     </div>
                 </div>
             </div>
+            
         </div>
     </section>
+
+    <!-- Mobile CTA -->
+    <div class="mobile-cta">
+        <a href="#booking" class="cta-button">
+            <i class="fas fa-calendar-check"></i> Book Your Stay
+        </a>
+    </div>
 
     <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>La D Da Lodge</h3>
-                    <p>Comfortable accommodation in the heart of the Northern Cape veld, just outside Kimberley.</p>
+                    <h3><i class="fas fa-home"></i> La D Da Lodge</h3>
+                    <p>Experience authentic Karoo hospitality in comfortable accommodation surrounded by breathtaking Northern Cape landscapes.</p>
+                    <div class="social-links" style="display: flex; gap: 1rem; margin-top: 1rem;">
+                        <a href="#" style="color: var(--sunset-gold); font-size: 1.2rem;">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" style="color: var(--sunset-gold); font-size: 1.2rem;">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" style="color: var(--sunset-gold); font-size: 1.2rem;">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
                 </div>
                 <div class="footer-section">
-                    <h3>Contact</h3>
+                    <h3><i class="fas fa-phone-alt"></i> Contact Us</h3>
                     <p><i class="fas fa-phone"></i> +27 53 123 4567</p>
                     <p><i class="fas fa-envelope"></i> bookings@laddalodge.co.za</p>
-                    <p><i class="fas fa-map-marker-alt"></i> Kimberley, Northern Cape</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Kimberley Road, Northern Cape</p>
+                    <p><i class="fas fa-clock"></i> Reception: 24/7</p>
                 </div>
                 <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <a href="#home">Home</a>
-                    <a href="#accommodation">Rooms</a>
-                    <a href="#booking">Book Now</a>
-                    <a href="dashboard.html">My Bookings</a>
+                    <h3><i class="fas fa-link"></i> Quick Links</h3>
+                    <a href="#home"><i class="fas fa-chevron-right"></i> Home</a>
+                    <a href="#accommodation"><i class="fas fa-chevron-right"></i> Rooms & Rates</a>
+                    <a href="#booking"><i class="fas fa-chevron-right"></i> Book Now</a>
+                    <a href="dashboard.html"><i class="fas fa-chevron-right"></i> My Bookings</a>
+                    <a href="#location"><i class="fas fa-chevron-right"></i> How to Find Us</a>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 La D Da Lodge. All rights reserved.</p>
+                <p>&copy; 2025 La D Da Lodge. All rights reserved. | <a href="#" style="color: var(--sunset-gold);">Privacy Policy</a> | <a href="#" style="color: var(--sunset-gold);">Terms & Conditions</a></p>
             </div>
         </div>
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        // Interactive Map
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize map
+            const map = L.map('map').setView([-28.780304, 24.738343], 13);
+            
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 18,
+            }).addTo(map);
+            
+            // Custom icon
+            const lodgeIcon = L.divIcon({
+                className: 'map-marker',
+                html: '<i class="fas fa-home"></i>',
+                iconSize: [40, 40],
+                iconAnchor: [20, 40],
+                popupAnchor: [0, -40]
+            });
+            
+            // Add marker for La D Da Lodge
+            const marker = L.marker([-28.780304, 24.738343], { icon: lodgeIcon }).addTo(map);
+            marker.bindPopup(`
+                <div style="text-align: center; padding: 0.5rem;">
+                    <h4 style="margin: 0; color: var(--primary-blue);">La D Da Lodge</h4>
+                    <p style="margin: 0.5rem 0; color: var(--text-muted);">Kimberley, Northern Cape</p>
+                    <a href="#booking" style="color: var(--sunset-gold); text-decoration: none; font-weight: 600;">
+                        <i class="fas fa-calendar-alt"></i> Book Now
+                    </a>
+                </div>
+            `).openPopup();
+            
+            // Add some points of interest
+            const pointsOfInterest = [
+                {
+                    coords: [-28.7300, 24.7500],
+                    name: "The Big Hole",
+                    icon: 'fas fa-gem'
+                },
+                {
+                    coords: [-28.7400, 24.7700],
+                    name: "City Center",
+                    icon: 'fas fa-city'
+                }
+            ];
+            
+            pointsOfInterest.forEach(point => {
+                const poiIcon = L.divIcon({
+                    className: 'map-marker',
+                    html: `<i class="${point.icon}"></i>`,
+                    iconSize: [35, 35],
+                    iconAnchor: [17.5, 35],
+                    popupAnchor: [0, -35]
+                });
+                
+                L.marker(point.coords, { icon: poiIcon })
+                    .addTo(map)
+                    .bindPopup(`<strong>${point.name}</strong>`);
+            });
+            
+            // Testimonial Slider
+            const track = document.getElementById('testimonialTrack');
+            const slides = document.querySelectorAll('.testimonial-slide');
+            const dots = document.querySelectorAll('.slider-dot');
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            let currentSlide = 0;
+            
+            function updateSlider() {
+                track.style.transform = `translateX(-${currentSlide * 100}%)`;
+                
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentSlide);
+                });
+            }
+            
+            dots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    currentSlide = parseInt(this.getAttribute('data-index'));
+                    updateSlider();
+                });
+            });
+            
+            prevBtn.addEventListener('click', function() {
+                currentSlide = currentSlide > 0 ? currentSlide - 1 : slides.length - 1;
+                updateSlider();
+            });
+            
+            nextBtn.addEventListener('click', function() {
+                currentSlide = currentSlide < slides.length - 1 ? currentSlide + 1 : 0;
+                updateSlider();
+            });
+            
+            // Auto-advance testimonials
+            setInterval(() => {
+                currentSlide = currentSlide < slides.length - 1 ? currentSlide + 1 : 0;
+                updateSlider();
+            }, 5000);
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Set minimum dates for booking form
+            const today = new Date().toISOString().split('T')[0];
+            const checkinInput = document.getElementById('checkin');
+            const checkoutInput = document.getElementById('checkout');
+            
+            if (checkinInput) {
+                checkinInput.min = today;
+                
+                checkinInput.addEventListener('change', function() {
+                    const checkinDate = new Date(this.value);
+                    const tomorrow = new Date(checkinDate);
+                    tomorrow.setDate(tomorrow.getDate() + 1);
+                    checkoutInput.min = tomorrow.toISOString().split('T')[0];
+                    
+                    // If checkout is before new min, clear it
+                    const checkoutDate = new Date(checkoutInput.value);
+                    if (checkoutDate <= checkinDate) {
+                        checkoutInput.value = '';
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
