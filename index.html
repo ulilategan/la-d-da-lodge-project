@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La D Da Lodge | Kimberley Accommodation</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+<!-- Update the logo section in index.html (and other pages) -->
+<a href="#" class="logo">
+    <img src="images/logo.png" alt="La D Da Lodge">
+</a>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#accommodation">Accommodation</a></li>
+                <li><a href="#amenities">Amenities</a></li>
+                <li><a href="#location">Location</a></li>
+                <li><a href="#booking" class="booking-btn">Book Now</a></li>
+                <li><a href="admin.html" class="admin-btn">Admin</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Experience the Heart of the Northern Cape</h1>
+            <p>Comfortable lodge accommodation just outside Kimberley, surrounded by authentic veld landscapes</p>
+            <a href="#booking" class="cta-button">Check Availability</a>
+        </div>
+        <div class="weather-widget">
+            <div class="weather-icon">
+                <i class="fas fa-sun"></i>
+            </div>
+            <div class="weather-info">
+                <h4>Kimberley Climate</h4>
+                <p>Sunny & Dry</p>
+                <p>Typical of the Karoo</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Accommodation Section -->
+    <section id="accommodation" class="accommodation">
+        <div class="container">
+            <h2 class="section-title">Our Accommodation</h2>
+            <p class="section-subtitle">Choose from our range of comfortable rooms</p>
+            
+            <div class="rooms-grid">
+                <!-- Family Room -->
+                <div class="room-card">
+                    <div class="room-type">Family Room</div>
+                    <div class="room-details">
+                        <h3>Double + Single Bed</h3>
+                        <p><i class="fas fa-users"></i> Sleeps 3</p>
+                        <p><i class="fas fa-bed"></i> Double + Single Bed</p>
+                        <p><i class="fas fa-shower"></i> En-suite Shower</p>
+                        <p><i class="fas fa-tv"></i> OpenView TV</p>
+                        <p><i class="fas fa-coffee"></i> Tea/Coffee Facilities</p>
+                        <p class="availability"><i class="fas fa-home"></i> 24 Units Available</p>
+                        <p class="price">From R450 pp/pn</p>
+                        <a href="booking.html?type=family" class="book-room-btn">Book This Room</a>
+                    </div>
+                </div>
+
+                <!-- Self Catering Unit -->
+                <div class="room-card featured">
+                    <div class="room-type">Self Catering Unit</div>
+                    <div class="room-details">
+                        <h3>Two Double Bedrooms</h3>
+                        <p><i class="fas fa-users"></i> Sleeps 4</p>
+                        <p><i class="fas fa-bed"></i> 2 Double Beds</p>
+                        <p><i class="fas fa-home"></i> Living Room & Kitchenette</p>
+                        <p><i class="fas fa-shower"></i> Shared Bathroom</p>
+                        <p><i class="fas fa-tv"></i> OpenView TV</p>
+                        <p><i class="fas fa-coffee"></i> Tea/Coffee Facilities</p>
+                        <p class="availability"><i class="fas fa-home"></i> 12 Units Available</p>
+                        <p class="price">From R650 pp/pn</p>
+                        <a href="booking.html?type=selfcatering" class="book-room-btn">Book This Unit</a>
+                    </div>
+                </div>
+
+                <!-- Standard Room -->
+                <div class="room-card">
+                    <div class="room-type">Standard Room</div>
+                    <div class="room-details">
+                        <h3>Two Single Beds</h3>
+                        <p><i class="fas fa-users"></i> Sleeps 2</p>
+                        <p><i class="fas fa-bed"></i> 2 Single Beds</p>
+                        <p><i class="fas fa-shower"></i> En-suite Shower</p>
+                        <p><i class="fas fa-tv"></i> OpenView TV</p>
+                        <p><i class="fas fa-coffee"></i> Tea/Coffee Facilities</p>
+                        <p class="availability"><i class="fas fa-home"></i> 64 Units Available</p>
+                        <p class="price">From R350 pp/pn</p>
+                        <a href="booking.html?type=standard" class="book-room-btn">Book This Room</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Amenities Section -->
+    <section id="amenities" class="amenities">
+        <div class="container">
+            <h2 class="section-title">Lodge Amenities</h2>
+            <div class="amenities-grid">
+                <div class="amenity">
+                    <i class="fas fa-car"></i>
+                    <h3>Secure Parking</h3>
+                    <p>Ample safe parking for all guests</p>
+                </div>
+                <div class="amenity">
+                    <i class="fas fa-umbrella-beach"></i>
+                    <h3>Braai Facilities</h3>
+                    <p>Traditional South African braai areas</p>
+                </div>
+                <div class="amenity">
+                    <i class="fas fa-tree"></i>
+                    <h3>Veld Views</h3>
+                    <p>Beautiful Northern Cape landscapes</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="booking" class="booking-section">
+        <div class="container">
+            <h2 class="section-title">Book Your Stay</h2>
+            <div class="booking-widget">
+                <form id="quickBooking" class="booking-form">
+                    <div class="form-group">
+                        <label for="checkin">Check-in</label>
+                        <input type="date" id="checkin" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="checkout">Check-out</label>
+                        <input type="date" id="checkout" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="roomType">Room Type</label>
+                        <select id="roomType" required>
+                            <option value="">Select Room Type</option>
+                            <option value="family">Family Room</option>
+                            <option value="selfcatering">Self Catering Unit</option>
+                            <option value="standard">Standard Room</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="guests">Guests</label>
+                        <input type="number" id="guests" min="1" max="10" value="1" required>
+                    </div>
+                    <button type="submit" class="cta-button">Check Availability</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Section -->
+    <section id="location" class="location">
+        <div class="container">
+            <h2 class="section-title">Our Location</h2>
+            <div class="location-content">
+                <div class="location-info">
+                    <h3>Just Outside Kimberley</h3>
+                    <p>Experience the authentic Northern Cape veld with easy access to Kimberley's attractions:</p>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 15 minutes from Kimberley city center</li>
+                        <li><i class="fas fa-flag"></i> Close to the Big Hole and Mining Museum</li>
+                        <li><i class="fas fa-paw"></i> Surrounded by natural veld landscapes</li>
+                        <li><i class="fas fa-sun"></i> Perfect base for exploring the region</li>
+                    </ul>
+                </div>
+                <div class="map-placeholder">
+                    <div class="map-content">
+                        <h4>Kimberley Area</h4>
+                        <p>Northern Cape, South Africa</p>
+                        <div class="veld-element">
+                            <i class="fas fa-mountain"></i>
+                            <i class="fas fa-tree"></i>
+                            <i class="fas fa-sun"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>La D Da Lodge</h3>
+                    <p>Comfortable accommodation in the heart of the Northern Cape veld, just outside Kimberley.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-phone"></i> +27 53 123 4567</p>
+                    <p><i class="fas fa-envelope"></i> bookings@laddalodge.co.za</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Kimberley, Northern Cape</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="#home">Home</a>
+                    <a href="#accommodation">Rooms</a>
+                    <a href="#booking">Book Now</a>
+                    <a href="dashboard.html">My Bookings</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 La D Da Lodge. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
