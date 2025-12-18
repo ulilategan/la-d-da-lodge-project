@@ -10,15 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
     <style>
-        /* Additional mobile-first responsive styles */
-        .hero-headline {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            margin-bottom: 1.5rem;
-        }
-        
-        .hero-subtitle {
-            font-size: clamp(1rem, 3vw, 1.3rem);
-        }
+
         
         .feature-highlight {
             display: flex;
@@ -268,9 +260,7 @@
                 padding: 1rem;
             }
             
-            .hero-content {
-                padding: 1.5rem !important;
-            }
+
             
             .testimonial-content {
                 padding: 1.5rem;
@@ -291,6 +281,7 @@
                 text-align: center;
             }
         }
+        
     </style>
 </head>
 <body>
@@ -317,41 +308,40 @@
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1 class="hero-headline">Escape to the Heart of the Karoo</h1>
-            <p class="hero-subtitle">Where luxury meets the wild. Experience authentic Northern Cape hospitality at La D Da Lodge, nestled just outside Kimberley amidst breathtaking veld landscapes.</p>
-            
-            <div class="feature-highlights">
-                <div class="feature-highlight">
-                    <i class="fas fa-shield-alt"></i>
-                    <span>Secure & Peaceful Environment</span>
+<section id="home" class="hero">
+    <div class="container">
+        <div class="hero-wrapper">
+
+            <div class="hero-content">
+                <h1 class="hero-headline">Escape to the Heart of the Karoo</h1>
+                <p class="hero-subtitle">
+                    Where luxury meets the wild. Experience authentic Northern Cape hospitality at La D Da Lodge.
+                </p>
+
+                <div class="feature-highlights">
+                    <div class="feature-highlight">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Secure & Peaceful Environment</span>
+                    </div>
+                    <div class="feature-highlight">
+                        <i class="fas fa-wifi"></i>
+                        <span>High-Speed Free WiFi</span>
+                    </div>
+                    <div class="feature-highlight">
+                        <i class="fas fa-sun"></i>
+                        <span>Year-round Sunshine Destination</span>
+                    </div>
                 </div>
-                <div class="feature-highlight">
-                    <i class="fas fa-wifi"></i>
-                    <span>High-Speed Free WiFi</span>
-                </div>
-                <div class="feature-highlight">
-                    <i class="fas fa-sun"></i>
-                    <span>Year-round Sunshine Destination</span>
-                </div>
+
+                <a href="#booking" class="cta-button">
+                    <i class="fas fa-calendar-alt"></i> Check Availability & Rates
+                </a>
             </div>
-            
-            <a href="#booking" class="cta-button">
-                <i class="fas fa-calendar-alt"></i> Check Availability & Rates
-            </a>
+
         </div>
-        <div class="weather-widget">
-            <div class="weather-icon">
-                <i class="fas fa-sun"></i>
-            </div>
-            <div class="weather-info">
-                <h4>Kimberley Weather</h4>
-                <p>Mostly Sunny</p>
-                <p>28°C </p>
-            </div>
-        </div>
-    </section>
+    </div>
+</section>
+
 
     <!-- Quick Stats -->
     <div class="container">
